@@ -11,8 +11,7 @@ const ForgotPasswordForm = ({ setIsForgotPassword }) => {
     setError("");
     setLoading(true);
 
-    const basePath = import.meta.env.PROD ? "/noted" : "";
-    const redirectURL = `${window.location.origin}${basePath}/reset-password`;
+    const redirectURL = `${window.location.origin}/noted/#/reset-password`;
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: redirectURL,
