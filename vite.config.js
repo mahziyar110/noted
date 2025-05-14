@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/noted",
+  base: "/noted/",
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
     force: true,
