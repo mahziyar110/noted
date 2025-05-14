@@ -11,8 +11,11 @@ const ForgotPasswordForm = ({ setIsForgotPassword }) => {
     setError("");
     setLoading(true);
 
+    const basePath = import.meta.env.PROD ? "/noted" : "";
+    const redirectURL = `${window.location.origin}${basePath}/reset-password`;
+
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: redirectURL,
     });
     setLoading(false);
     if (error) {
