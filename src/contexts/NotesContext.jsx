@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from "react";
 import {
-  getNotes,
-  addNote,
-  deleteNote,
-  updateNote,
-} from "../services/notesService";
+  getRowsFromTableByUserId,
+  addRowInTable,
+  updateRowInTableById,
+  deleteRowInTableById,
+} from "../services/dbService";
 import { useUser } from "./UserContext";
 
 const NotesContext = createContext();
@@ -22,7 +22,7 @@ export const NotesProvider = ({ children }) => {
     if (isLoaded) return;
     setLoading(true);
     try {
-      const data = await getNotes(user.id);
+      const data = await getRowsFromTableByUserId("notes", user.id);
       setNotes(data);
       setIsLoaded(true);
     } catch (err) {
@@ -34,7 +34,11 @@ export const NotesProvider = ({ children }) => {
 
   const createNote = async (title, content) => {
     try {
-      const newNote = await addNote(user.id, title, content);
+      const newNote = await addRowInTable("notes", {
+        user_id: user.id,
+        title,
+        content,
+      });
       setNotes((prev) => [newNote, ...prev]);
     } catch (err) {
       console.error("Add note failed:", err.message);
@@ -43,7 +47,10 @@ export const NotesProvider = ({ children }) => {
 
   const editNote = async (noteId, title, content) => {
     try {
-      const newNote = await updateNote(noteId, title, content);
+      const newNote = await updateRowInTableById("notes", noteId, {
+        title,
+        content,
+      });
       setNotes((prev) => prev.map((n) => (n.id === noteId ? newNote : n)));
     } catch (err) {
       console.error("Edit note failed:", err.message);
@@ -52,7 +59,7 @@ export const NotesProvider = ({ children }) => {
 
   const removeNote = async (id) => {
     try {
-      await deleteNote(id);
+      await deleteRowInTableById("notes", id);
       setNotes((prev) => prev.filter((n) => n.id !== id));
     } catch (err) {
       console.error("Delete note failed:", err.message);

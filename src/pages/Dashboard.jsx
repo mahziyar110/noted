@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Notes from "../components/Notes/Notes";
-import Tasks from "../components/Tasks";
+import Tasks from "../components/Tasks/Tasks";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("notes");
