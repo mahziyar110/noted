@@ -14,17 +14,26 @@ export const useNotes = () => useContext(NotesContext);
 export const NotesProvider = ({ children }) => {
   const user = useUser();
   const [notes, setNotes] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [page, setPage] = useState(0);
+  const [pageLoaded, setPageLoaded] = useState(-1);
+  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const loadNotes = async () => {
-    if (!user) return;
-    if (isLoaded) return;
+    if (!user || !hasMore || loading) return;
     setLoading(true);
     try {
-      const data = await getRowsFromTableByUserId("notes", user.id);
-      setNotes(data);
-      setIsLoaded(true);
+      const { data, count } = await getRowsFromTableByUserId(
+        "notes",
+        user.id,
+        page
+      );
+      const newNotes = [...notes, ...data];
+      setNotes(newNotes);
+      if (newNotes.length >= count) {
+        setHasMore(false);
+      }
+      setPageLoaded(page);
     } catch (err) {
       console.error("Failed to fetch notes:", err.message);
     } finally {
@@ -68,7 +77,18 @@ export const NotesProvider = ({ children }) => {
 
   return (
     <NotesContext.Provider
-      value={{ notes, loading, loadNotes, createNote, editNote, removeNote }}
+      value={{
+        notes,
+        loading,
+        hasMore,
+        pageLoaded,
+        page,
+        setPage,
+        loadNotes,
+        createNote,
+        editNote,
+        removeNote,
+      }}
     >
       {children}
     </NotesContext.Provider>

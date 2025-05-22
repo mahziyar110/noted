@@ -31,7 +31,6 @@ const ExpandedTask = ({ task, setExpandedTaskId, handleCompletionToggle }) => {
                 onClick={() => setIsEditMode(true)}
                 className="cursor-pointer p-1 rounded-md hover:bg-gray-200 transition"
                 title="Edit Task"
-                aria-label="Edit Task"
               >
                 ✏️
               </button>
@@ -39,7 +38,6 @@ const ExpandedTask = ({ task, setExpandedTaskId, handleCompletionToggle }) => {
                 onClick={() => setExpandedTaskId(null)}
                 className="cursor-pointer p-1 rounded-md hover:bg-gray-200 transition"
                 title="Close Task"
-                aria-label="Close Task"
               >
                 ✖
               </button>

@@ -17,7 +17,6 @@ const ExpandedNote = ({ note, setExpandedNoteId }) => {
                   onClick={() => setIsEditMode(true)}
                   className="cursor-pointer p-1 rounded-md hover:bg-gray-200 transition"
                   title="Edit Note"
-                  aria-label="Edit Note"
                 >
                   ✏️
                 </button>
@@ -25,7 +24,6 @@ const ExpandedNote = ({ note, setExpandedNoteId }) => {
                   onClick={() => setExpandedNoteId(null)}
                   className="cursor-pointer p-1 rounded-md hover:bg-gray-200 transition"
                   title="Close Note"
-                  aria-label="Close Note"
                 >
                   ✖
                 </button>

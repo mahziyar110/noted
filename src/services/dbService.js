@@ -3,17 +3,23 @@ import { supabase } from "./supabaseClient";
 export const getRowsFromTableByUserId = async (
   table,
   userId,
+  page = 0,
+  limit = 50,
   orderBy = "created_at",
   ascOrder = false
 ) => {
-  const { data, error } = await supabase
+  const from = page * limit;
+  const to = from + limit - 1;
+
+  const { data, error, count } = await supabase
     .from(table)
-    .select("*")
+    .select("*", { count: "exact" })
     .eq("user_id", userId)
-    .order(orderBy, { ascending: ascOrder });
+    .order(orderBy, { ascending: ascOrder })
+    .range(from, to);
 
   if (error) throw error;
-  return data;
+  return { data, count };
 };
 
 export const addRowInTable = async (table, dataObj) => {

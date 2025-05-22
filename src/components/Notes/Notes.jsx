@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import AddNote from "./AddNote";
 import NoteCard from "./NoteCard";
 import { useNotes } from "../../contexts/NotesContext";
@@ -7,11 +7,45 @@ const Notes = () => {
   const [showAddNote, setShowAddNote] = useState(false);
   const [confirmingDeleteIds, setConfirmingDeleteIds] = useState({});
 
-  const { loading, loadNotes, notes, removeNote } = useNotes();
+  const loaderRef = useRef(null);
+
+  const {
+    loading,
+    hasMore,
+    pageLoaded,
+    page,
+    setPage,
+    loadNotes,
+    notes,
+    removeNote,
+  } = useNotes();
 
   useEffect(() => {
-    loadNotes();
-  }, []);
+    if (page > pageLoaded) {
+      loadNotes();
+    }
+  }, [page, pageLoaded, loadNotes]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (pageLoaded < 0 || !hasMore || loading) return;
+
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setPage((prev) => prev + 1);
+      }
+    });
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [loading, pageLoaded, hasMore, setPage]);
 
   const handleDeleteNote = async (id) => {
     try {
@@ -42,7 +76,7 @@ const Notes = () => {
       <button
         onClick={() => setShowAddNote(true)}
         className="fixed bottom-6 right-6 md:hidden bg-blue-600 text-white text-3xl font-bold w-14 h-14 rounded-full shadow-lg hover:bg-blue-700 transition z-50"
-        aria-label="Add Note"
+        title="Add Note"
       >
         +
       </button>
@@ -77,6 +111,19 @@ const Notes = () => {
             setConfirmingDeleteIds={setConfirmingDeleteIds}
           ></NoteCard>
         ))}
+
+        {hasMore && pageLoaded >= 0 && (
+          <div
+            ref={loaderRef}
+            className="col-span-full flex justify-center items-center h-10"
+          >
+            {loading && (
+              <p className="text-gray-600 font-medium text-sm">
+                ⏳Loading more...
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

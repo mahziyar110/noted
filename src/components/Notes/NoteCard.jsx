@@ -53,7 +53,6 @@ const NoteCard = ({
             }
             className="text-xl font-bold cursor-pointer bg-white p-1 rounded-md hover:bg-gray-200 transition"
             title="Expand Note"
-            aria-label="Expand Note"
           >
             ⛶
           </button>
@@ -66,7 +65,6 @@ const NoteCard = ({
             }
             className="cursor-pointer bg-white p-1 rounded-md hover:bg-gray-200 transition"
             title="Delete Note"
-            aria-label="Delete Note"
           >
             ❌
           </button>

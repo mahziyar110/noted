@@ -93,7 +93,6 @@ const TaskCard = ({
             }
             className="text-xl font-bold cursor-pointer bg-white p-1 rounded-md hover:bg-gray-200 transition"
             title="Expand Task"
-            aria-label="Expand Task"
           >
             ⛶
           </button>
@@ -103,7 +102,6 @@ const TaskCard = ({
             }
             className="cursor-pointer bg-white p-1 rounded-md hover:bg-gray-200 transition"
             title="Delete Task"
-            aria-label="Delete Task"
           >
             ❌
           </button>

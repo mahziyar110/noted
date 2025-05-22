@@ -25,7 +25,7 @@ function App() {
     <div className="h-screen flex flex-col bg-gradient-to-t from-white to-blue-100">
       <Router>
         <Navbar />
-        <main className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
           <Routes>
             <Route
               path="/"
@@ -52,7 +52,7 @@ function App() {
               }
             />
           </Routes>
-        </main>
+        </div>
       </Router>
     </div>
   );

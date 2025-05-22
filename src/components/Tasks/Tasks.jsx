@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddTask from "./AddTask";
 import TaskCard from "./TaskCard";
 import { useTasks } from "../../contexts/TasksContext";
@@ -7,11 +7,45 @@ const Tasks = () => {
   const [showAddTask, setShowAddTask] = useState(false);
   const [confirmingDeleteIds, setConfirmingDeleteIds] = useState({});
 
-  const { loading, loadTasks, tasks, removeTask } = useTasks();
+  const loaderRef = useRef(null);
+
+  const {
+    loading,
+    hasMore,
+    pageLoaded,
+    page,
+    setPage,
+    loadTasks,
+    tasks,
+    removeTask,
+  } = useTasks();
 
   useEffect(() => {
-    loadTasks();
-  }, []);
+    if (page > pageLoaded) {
+      loadTasks();
+    }
+  }, [page, pageLoaded, loadTasks]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (pageLoaded < 0 || !hasMore || loading) return;
+
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        setPage((prev) => prev + 1);
+      }
+    });
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [loading, pageLoaded, hasMore, setPage]);
 
   const handleDeleteTask = async (id) => {
     try {
@@ -42,7 +76,7 @@ const Tasks = () => {
       <button
         onClick={() => setShowAddTask(true)}
         className="fixed bottom-6 right-6 md:hidden bg-blue-600 text-white text-3xl font-bold w-14 h-14 rounded-full shadow-lg hover:bg-blue-700 transition z-50"
-        aria-label="Add Task"
+        title="Add Task"
       >
         +
       </button>
@@ -77,6 +111,19 @@ const Tasks = () => {
             setConfirmingDeleteIds={setConfirmingDeleteIds}
           ></TaskCard>
         ))}
+
+        {hasMore && pageLoaded >= 0 && (
+          <div
+            ref={loaderRef}
+            className="col-span-full flex justify-center items-center h-10"
+          >
+            {loading && (
+              <p className="text-gray-600 font-medium text-sm">
+                ⏳Loading more...
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

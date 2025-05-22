@@ -14,17 +14,26 @@ export const useTasks = () => useContext(TasksContext);
 export const TasksProvider = ({ children }) => {
   const user = useUser();
   const [tasks, setTasks] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [page, setPage] = useState(0);
+  const [pageLoaded, setPageLoaded] = useState(-1);
+  const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const loadTasks = async () => {
-    if (!user) return;
-    if (isLoaded) return;
+    if (!user || !hasMore || loading) return;
     setLoading(true);
     try {
-      const data = await getRowsFromTableByUserId("tasks", user.id);
-      setTasks(data);
-      setIsLoaded(true);
+      const { data, count } = await getRowsFromTableByUserId(
+        "tasks",
+        user.id,
+        page
+      );
+      const newTasks = [...tasks, ...data];
+      setTasks(newTasks);
+      if (newTasks.length >= count) {
+        setHasMore(false);
+      }
+      setPageLoaded(page);
     } catch (err) {
       console.error("Failed to fetch tasks:", err.message);
     } finally {
@@ -76,7 +85,18 @@ export const TasksProvider = ({ children }) => {
 
   return (
     <TasksContext.Provider
-      value={{ tasks, loading, loadTasks, createTask, editTask, removeTask }}
+      value={{
+        tasks,
+        loading,
+        hasMore,
+        pageLoaded,
+        page,
+        setPage,
+        loadTasks,
+        createTask,
+        editTask,
+        removeTask,
+      }}
     >
       {children}
     </TasksContext.Provider>

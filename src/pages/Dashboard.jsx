@@ -58,9 +58,9 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1">
+        <main className="flex-1 mb-4">
           {activeTab === "notes" ? <Notes /> : <Tasks />}
-        </div>
+        </main>
       </div>
     </div>
   );
