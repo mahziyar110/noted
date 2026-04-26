@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Modal from "../Modal";
 import { useTasks } from "../../contexts/TasksContext";
+import AITextArea from "../AITextArea";
 
 const AddTask = ({ showAddTask, setShowAddTask }) => {
   const [titleInput, setTitleInput] = useState("");
@@ -73,12 +74,10 @@ const AddTask = ({ showAddTask, setShowAddTask }) => {
             <label className="block text-gray-700 font-medium mb-1">
               Description
             </label>
-            <textarea
-              value={descriptionInput}
-              onChange={(e) => setDescriptionInput(e.target.value)}
+            <AITextArea
+              inputValue={descriptionInput}
+              onChange={setDescriptionInput}
               placeholder="Describe your task..."
-              rows="4"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNotes } from "../../contexts/NotesContext";
+import AITextArea from "../AITextArea";
 
 const EditNote = ({ note, setIsEditMode }) => {
   const [titleInput, setTitleInput] = useState(note.title);
@@ -43,13 +44,11 @@ const EditNote = ({ note, setIsEditMode }) => {
           <label className="block text-gray-700 font-medium mb-1">
             Content
           </label>
-          <textarea
-            value={contentInput}
-            onChange={(e) => setContentInput(e.target.value)}
-            required
+          <AITextArea
+            inputValue={contentInput}
+            onChange={setContentInput}
             placeholder="Write your note..."
-            rows="6"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+            rows={6}
           />
         </div>
 

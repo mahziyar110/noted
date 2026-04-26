@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useTasks } from "../../contexts/TasksContext";
+import AITextArea from "../AITextArea";
 
 const EditTask = ({ task, setIsEditMode }) => {
   const [titleInput, setTitleInput] = useState(task.title);
   const [descriptionInput, setDescriptionInput] = useState(
-    task.description || ""
+    task.description || "",
   );
   const [dueDateInput, setDueDateInput] = useState(
-    task.due_date ? new Date(task.due_date).toISOString().slice(0, 16) : ""
+    task.due_date ? new Date(task.due_date).toISOString().slice(0, 16) : "",
   );
   const [isCompleted, setIsCompleted] = useState(task.is_completed);
   const [loading, setLoading] = useState(false);
@@ -57,13 +58,11 @@ const EditTask = ({ task, setIsEditMode }) => {
           <label className="block text-gray-700 font-medium mb-1">
             Description
           </label>
-          <textarea
-            value={descriptionInput}
-            onChange={(e) => setDescriptionInput(e.target.value)}
-            required
-            placeholder="Write your task..."
-            rows="5"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+          <AITextArea
+            inputValue={descriptionInput}
+            onChange={setDescriptionInput}
+            placeholder="Describe your task..."
+            rows={5}
           />
         </div>
 
@@ -103,7 +102,7 @@ const EditTask = ({ task, setIsEditMode }) => {
               setDueDateInput(
                 task.due_date
                   ? new Date(task.due_date).toISOString().slice(0, 16)
-                  : ""
+                  : "",
               );
               setIsCompleted(task.is_completed);
               setIsEditMode(false);
