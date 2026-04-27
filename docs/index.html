@@ -87,9 +87,15 @@
     (function () {
       const BASE = "https://noted-ai.vercel.app/";
 
+      let path = window.location.pathname;
+
+      if (path.startsWith("/noted")) {
+        path = path.replace(/^\/noted/, "");
+      }
+
       const target =
         BASE +
-        window.location.pathname +
+        path +
         window.location.search +
         window.location.hash;
 
@@ -117,9 +123,15 @@
     (function () {
       const BASE = "https://noted-ai.vercel.app/";
 
+      let path = window.location.pathname;
+
+      if (path.startsWith("/noted")) {
+        path = path.replace(/^\/noted/, "");
+      }
+
       const target =
         BASE +
-        window.location.pathname +
+        path +
         window.location.search +
         window.location.hash;
 
