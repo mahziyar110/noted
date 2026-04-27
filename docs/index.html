@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+
+    <!-- Fallback redirect (no JS) -->
+    <meta http-equiv="refresh" content="0; url=https://your-new-domain.vercel.app" />
+
+    <!-- Basic styling -->
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #111827;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --accent: #6366f1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: radial-gradient(circle at top, #1f2937, var(--bg));
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .card {
+        background: var(--card);
+        padding: 32px;
+        border-radius: 12px;
+        text-align: center;
+        max-width: 420px;
+        width: 90%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      h3 {
+        margin: 0 0 12px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .spinner {
+        margin: 20px auto;
+        width: 28px;
+        height: 28px;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <!-- Primary redirect -->
+    <script>
+      (function () {
+        const BASE = "https://your-new-domain.vercel.app"; // change this
+
+        const target =
+          BASE +
+          window.location.pathname +
+          window.location.search +
+          window.location.hash;
+
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div class="card">
+      <h3>Redirecting…</h3>
+      <div class="spinner"></div>
+
+      <p>
+        Taking you to the new site.<br />
+        If it doesn’t happen automatically,
+        <a id="fallback-link" href="https://your-new-domain.vercel.app">
+          click here
+        </a>.
+      </p>
+    </div>
+
+    <!-- Update fallback link -->
+    <script>
+      (function () {
+        const BASE = "https://your-new-domain.vercel.app";
+
+        const target =
+          BASE +
+          window.location.pathname +
+          window.location.search +
+          window.location.hash;
+
+        const link = document.getElementById("fallback-link");
+        if (link) link.href = target;
+      })();
+    </script>
+  </body>
+</html>
